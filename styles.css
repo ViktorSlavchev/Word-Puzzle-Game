@@ -1,0 +1,87 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+html {
+	font-size: 62.5%;
+}
+body {
+	font-family: "Roboto", sans-serif;
+	background-color: #f4f4f4;
+}
+
+.piece {
+	display: grid;
+
+	gap: 0.6rem;
+	width: fit-content;
+
+	position: absolute;
+}
+
+.block {
+	width: 7rem;
+	height: 7rem;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: 4rem;
+	font-weight: 700;
+
+	border-radius: 5%;
+}
+
+.right-hand {
+	grid-template-columns: repeat(2, 1fr);
+	grid-template-rows: repeat(2, 1fr);
+}
+
+.right-hand .block {
+	background-color: #a9efc5;
+	color: #079455;
+}
+
+.left-hand {
+	grid-template-columns: repeat(2, 1fr);
+	grid-template-rows: repeat(2, 1fr);
+}
+
+.left-hand .block {
+	background-color: #fedf89;
+	color: #dc6803;
+}
+
+.small-straight {
+	grid-template-columns: repeat(1, 1fr);
+	grid-template-rows: repeat(2, 1fr);
+}
+
+.small-straight .block {
+	background-color: #fecdca;
+	color: #d92d20;
+}
+
+.t-shape {
+	grid-template-columns: repeat(2, 1fr);
+	grid-template-rows: repeat(3, 1fr);
+}
+
+.t-shape .block {
+	background-color: #e9d7fe;
+	color: #7f56d9;
+}
+
+.tall-straight {
+	grid-template-columns: repeat(2, 1fr);
+	grid-template-rows: repeat(3, 1fr);
+}
+
+.tall-straight .block {
+	background-color: #b2ccff;
+	color: #155eef;
+}

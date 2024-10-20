@@ -22,7 +22,7 @@ function buildTrie(dictionary) {
 // Build the trie once
 const trieRoot = buildTrie(dictionary);
 
-const pieces = [
+const piecesTemplates = [
 	{
 		name: "RightHand",
 		blocks: [
@@ -71,12 +71,14 @@ let board = Array.from({ length: boardSize }, () => Array.from({ length: boardSi
 let solverStartTime;
 const SOLVER_TIME_LIMIT = 5000; // Time limit in milliseconds
 
+let placedPieces = [];
+
 // Generate field and find words in rows and columns
 function generateField() {
 	// Reset board
 	board = Array.from({ length: boardSize }, () => Array.from({ length: boardSize }, () => ({ pieceId: null, letter: null })));
 
-	let piecesToPlace = [...pieces];
+	let piecesToPlace = [...piecesTemplates];
 	shuffleArray(piecesToPlace);
 
 	for (let i = 0; i < piecesToPlace.length; i++) {
@@ -98,6 +100,7 @@ function generateField() {
 		for (const pos of positions) {
 			if (canPlacePiece(board, piece, pos.x, pos.y)) {
 				placePiece(board, piece, pos.x, pos.y, i + 1);
+				placedPieces.push({ x: pos.x, y: pos.y, piece });
 				placed = true;
 				break;
 			}
@@ -381,25 +384,48 @@ function placeWords(board, words, trieRoot) {
 	return solve(0) ? board : null;
 }
 
+function convertBoardToPieces(board) {
+	const pieces = [];
+	for (let i = 0; i < placedPieces.length; i++) {
+		const { x, y, piece } = placedPieces[i];
+		const pieceBlocks = [];
+		for (const block of piece.blocks) {
+			const cell = board[y + block.y][x + block.x];
+			pieceBlocks.push({ x: block.x, y: block.y, letter: cell.letter });
+		}
+		pieces.push({ name: piece.name, blocks: pieceBlocks });
+	}
+
+	return pieces;
+}
+
 function generateLevel() {
 	const maxAttempts = 50; // Limit the number of attempts
 	for (let attempt = 1; attempt <= maxAttempts; attempt++) {
 		console.log(`Attempt ${attempt} `);
 		board = Array.from({ length: boardSize }, () => Array.from({ length: boardSize }, () => ({ pieceId: null, letter: null })));
+		placedPieces = [];
 		generateField();
+
+		numberBoard = JSON.parse(JSON.stringify(board));
+
 		const words = getWords(board);
+		console.log(words);
 
 		const test = placeWords(board, words, trieRoot);
 		if (test) {
 			console.log("Final Board: ");
 			printBoard(test);
 
-			return;
+			console.log(convertBoardToPieces(test));
+
+			console.log(new Date() - solverStartTime);
+			return {
+				pieces: convertBoardToPieces(test),
+			};
 		} else {
 			console.log("Solver failed, regenerating field... ");
 		}
 	}
 	console.error("Failed to generate a solvable level within the maximum attempts.");
 }
-
-generateLevel();

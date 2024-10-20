@@ -4,14 +4,23 @@
 	margin: 0;
 	padding: 0;
 	box-sizing: border-box;
+
+	user-select: none;
+	font-family: "Inter", sans-serif;
 }
 
 html {
 	font-size: 62.5%;
 }
 body {
-	font-family: "Roboto", sans-serif;
 	background-color: #f4f4f4;
+}
+
+.headline {
+	text-align: center;
+	font-size: 2rem;
+	font-weight: 700;
+	margin: 2rem 0;
 }
 
 .piece {
@@ -21,6 +30,9 @@ body {
 	width: fit-content;
 
 	position: absolute;
+
+	transition: top 0.1s, left 0.1s;
+	z-index: 20;
 }
 
 .block {
@@ -84,4 +96,39 @@ body {
 .tall-straight .block {
 	background-color: #b2ccff;
 	color: #155eef;
+}
+
+.game-board {
+	display: grid;
+
+	margin: 0 auto;
+	position: relative;
+
+	width: fit-content;
+
+	gap: 0.6rem;
+}
+
+.grid-4 {
+	grid-template-columns: repeat(4, 1fr);
+	grid-template-rows: repeat(4, 1fr);
+}
+
+.board-square {
+	width: 7rem;
+	height: 7rem;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: 4rem;
+	font-weight: 700;
+
+	border-radius: 5%;
+
+	background-color: #d0d5dd;
+}
+
+.board-square.highlight {
+	background-color: #939393;
 }

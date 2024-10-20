@@ -10,9 +10,11 @@ class Piece {
 			.replace(/[A-Z]/g, (match) => `-${match}`)
 			.toLowerCase()
 			.slice(1);
-		console.log(this.className, content.name);
 
 		this.element = this.generateElement();
+
+		this.isPlaced = false;
+		this.boardPosition = null;
 	}
 
 	generateElement() {
@@ -45,7 +47,9 @@ class Piece {
 		this.x = x;
 		this.y = y;
 
-		this.element.style.left = `${x}px`;
-		this.element.style.top = `${y}px`;
+		requestAnimationFrame(() => {
+			this.element.style.left = `${x}px`;
+			this.element.style.top = `${y}px`;
+		});
 	}
 }

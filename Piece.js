@@ -15,6 +15,9 @@ class Piece {
 
 		this.isPlaced = false;
 		this.boardPosition = null;
+
+		this.width = Math.max(...this.bricks.map((block) => block.x));
+		this.height = Math.max(...this.bricks.map((block) => block.y));
 	}
 
 	generateElement() {

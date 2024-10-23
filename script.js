@@ -22,9 +22,12 @@ let offsetX, offsetY;
 
 pieces.forEach((piece) => {
 	piece.element.addEventListener("mousedown", (e) => onMouseDown(e, piece));
+	piece.element.addEventListener("touchstart", (e) => onMouseDown(e, piece));
 });
 
 function onMouseDown(event, piece) {
+	if (event.touches) event = event.touches[0];
+
 	draggedPiece = piece;
 	offsetX = event.clientX - piece.element.getBoundingClientRect().left;
 	offsetY = event.clientY - piece.element.getBoundingClientRect().top;
@@ -35,13 +38,14 @@ function onMouseDown(event, piece) {
 }
 
 function onMouseMove(event) {
+	if (event.touches) event = event.touches[0];
 	if (!draggedPiece) return;
 
 	board.checkIfPieceFits(draggedPiece);
 	draggedPiece.move(event.clientX - offsetX, event.clientY - offsetY);
 }
 
-function onMouseUp() {
+function onMouseUp(e) {
 	if (!draggedPiece) return;
 
 	const square = board.checkIfPieceFits(draggedPiece);
@@ -54,3 +58,5 @@ function onMouseUp() {
 
 document.addEventListener("mousemove", onMouseMove);
 document.addEventListener("mouseup", onMouseUp);
+document.addEventListener("touchmove", onMouseMove);
+document.addEventListener("touchend", onMouseUp);

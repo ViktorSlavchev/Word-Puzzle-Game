@@ -154,4 +154,48 @@ class Board {
 		piece.boardPosition = null;
 		piece.element.style.zIndex = 20;
 	}
+
+	getWords() {
+		const board = this.boardSquares;
+		const words = [];
+
+		// Rows
+		for (let i = 0; i < boardSize; i++) {
+			let startWord = null,
+				activeWord = false;
+			for (let j = 0; j < boardSize; j++) {
+				if (board[i][j] === null) {
+					if (activeWord) words.push({ start: [i, startWord], end: [i, j - 1] });
+					activeWord = false;
+				} else {
+					if (!activeWord) startWord = j;
+					activeWord = true;
+				}
+
+				if (j === boardSize - 1 && activeWord) words.push({ start: [i, startWord], end: [i, j] });
+			}
+		}
+
+		// Columns
+		for (let i = 0; i < boardSize; i++) {
+			let startWord = null,
+				activeWord = false;
+			for (let j = 0; j < boardSize; j++) {
+				if (board[j][i] === null) {
+					if (activeWord) words.push({ start: [startWord, i], end: [j - 1, i] });
+					activeWord = false;
+				} else {
+					if (!activeWord) startWord = j;
+					activeWord = true;
+				}
+
+				if (j === boardSize - 1 && activeWord) words.push({ start: [startWord, i], end: [j, i] });
+			}
+		}
+		return words.filter((word) => word.end[0] - word.start[0] > 0 || word.end[1] - word.start[1] > 0);
+	}
+
+	checkIfSolved() {
+		console.log(this.getWords());
+	}
 }

@@ -60,3 +60,19 @@ document.addEventListener("mousemove", onMouseMove);
 document.addEventListener("mouseup", onMouseUp);
 document.addEventListener("touchmove", onMouseMove);
 document.addEventListener("touchend", onMouseUp);
+
+
+window.addEventListener("resize", () => {
+	// Update positions for each piece for the new window size and square postiotions
+	pieces.forEach((piece, ind) => {
+		if (piece.isPlaced) {
+			const { x, y } = piece.boardPosition;
+			const square = board.getSqureByCoordinates(piece.type === "TShape" ? x - 1 : x, y);
+			piece.moveWithOutAnimation(square.getBoundingClientRect().x, square.getBoundingClientRect().y);
+		}
+	});
+	console.log("resize");
+
+});
+
+

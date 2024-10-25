@@ -55,4 +55,15 @@ class Piece {
 			this.element.style.top = `${y}px`;
 		});
 	}
+
+	moveWithOutAnimation(x, y) {
+		this.element.style.transition = "none";
+		this.x = x;
+		this.y = y;
+		this.element.style.left = `${x}px`;
+		this.element.style.top = `${y}px`;
+		setTimeout(() => {
+			this.element.style.transition = "top 0.1s, left 0.1s";
+		}, 50);
+	}
 }

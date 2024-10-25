@@ -24,6 +24,8 @@ class Board {
 				this.boardSquaresElements.push(square);
 			}
 		}
+
+		document.querySelector(".controls-holder").style.width = boardElement.getBoundingClientRect().width + "px";
 	}
 
 	getSqureByCoordinates(x, y) {

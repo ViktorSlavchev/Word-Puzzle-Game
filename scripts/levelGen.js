@@ -412,16 +412,16 @@ function getLevel(boardSize = 4) {
 			numberBoard = JSON.parse(JSON.stringify(board));
 
 			const words = getWords(board);
-			console.log(words);
+			// console.log(words);
 
 			const test = placeWords(board, words, trieRoot);
 			if (test) {
 				console.log("Final Board: ");
 				printBoard(test);
 
-				console.log(convertBoardToPieces(test));
+				// console.log(convertBoardToPieces(test));
 
-				console.log(new Date() - solverStartTime);
+				console.log(new Date() - solverStartTime, "ms");
 				return {
 					pieces: convertBoardToPieces(test),
 				};

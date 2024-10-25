@@ -71,7 +71,9 @@ window.addEventListener("resize", () => {
 			piece.moveWithOutAnimation(square.getBoundingClientRect().x, square.getBoundingClientRect().y);
 		}
 	});
-	console.log("resize");
+
+	document.querySelector(".controls-holder").style.width = document.querySelector(".game-board").getBoundingClientRect().width + "px";
+
 
 });
 

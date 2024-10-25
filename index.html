@@ -16,13 +16,36 @@
 		<link rel="stylesheet" href="css/styles.css" />
 	</head>
 	<body>
-		<div class="headline">
-			<button class="btn-headline btn-theme"><ion-icon name="sunny"></ion-icon></button>
-			<h1>WordPuzzle</h1>
-			<button class="btn-headline btn-help"><ion-icon name="information-circle-outline"></ion-icon></button>
-		</div>
-		<div class="game-holder">
-			<div class="game-board grid-4"></div>
+		<div class="container">
+			<div class="headline">
+				<button class="btn-headline btn-theme"><ion-icon name="sunny"></ion-icon></button>
+				<h1>WordPuzzle</h1>
+				<button class="btn-headline btn-help"><ion-icon name="information-circle-outline"></ion-icon></button>
+			</div>
+
+			<div class="controls-holder">
+				<button class="btn-controlls btn-gamemode">
+					<span>Daily</span>
+					<ion-icon name="game-controller-outline"></ion-icon>
+				</button>
+				<p class="controlls-date">Friday Oct, 11</p>
+				<div class="dropdown displaynone">
+					<button class="dropbtn"><span class="current-diff">Medium</span> <ion-icon name="caret-down-outline"></ion-icon></button>
+					<div class="dropdown-content">
+						<a href="?free-play&difficulty=easy">Easy</a>
+						<a href="?free-play&difficulty=medium">Medium</a>
+						<a href="?free-play&difficulty=hard">Hard</a>
+					</div>
+				</div>
+				<button class="btn-controlls btn-reset">
+					<ion-icon name="refresh"></ion-icon>
+					<span>Reset</span>
+				</button>
+			</div>
+
+			<div class="game-holder">
+				<div class="game-board grid-4"></div>
+			</div>
 		</div>
 	</body>
 </html>

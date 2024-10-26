@@ -1,6 +1,34 @@
 const url = window.location.search;
 const params = new URLSearchParams(url);
 
+let diffcultyString;
+let seed;
+
+if (params.has("free-play")) {
+	diffcultyString = params.get("difficulty") || "medium";
+
+	if (!["easy", "medium", "hard", "testing"].includes(diffcultyString)) {
+		diffcultyString = "medium";
+	}
+
+	if (params.has("seed")) {
+		seed = params.get("seed");
+	} else {
+		seed = `${Math.floor(Math.random() * 10000000)}`;
+	}
+
+	Math.seedrandom(seed);
+	console.log("Seed:", seed);
+
+	document.querySelector(".btn-gamemode span").textContent = "Free Play";
+	document.querySelector(".controlls-date").classList.add("displaynone");
+	document.querySelector(".dropdown").classList.remove("displaynone");
+	document.querySelector(".current-diff").textContent = diffcultyString[0].toUpperCase() + diffcultyString.slice(1);
+} else {
+	diffcultyString = setUpDailyGame();
+	document.querySelector(".controlls-date").textContent = formatDate(new Date());
+}
+
 const boardSize = +params.get("size") || 5;
 const levelPieces = getLevel(boardSize).pieces;
 console.log(levelPieces);

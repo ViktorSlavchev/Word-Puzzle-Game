@@ -14,9 +14,9 @@ function showWinModal() {
     const specialTimer = document.querySelector(".special-timer");
     specialTimer.textContent = formatTime(timer);
 }
-// document.querySelector(".btn-play-again").addEventListener("click", () => {
-//     window.location.reload();
-// });
+document.querySelector(".btn-play-again").addEventListener("click", () => {
+    window.location.reload();
+});
 
 function showHelpModal() {
     const helpModal = document.querySelector(".help-modal");
@@ -40,13 +40,13 @@ document.querySelector(".btn-help").addEventListener("click", () => {
     showHelpModal();
 });
 
-// document.querySelector(".btn-close").addEventListener("click", () => {
-//     hideModal();
-// });
+document.querySelector(".btn-close").addEventListener("click", () => {
+    hideModal();
+});
 
-// document.querySelector(".overlay").addEventListener("click", () => {
-//     hideModal();
-// });
+document.querySelector(".overlay").addEventListener("click", () => {
+    hideModal();
+});
 
 const toggleTheme = () => {
     document.body.classList.toggle("dark-mode");
@@ -62,7 +62,7 @@ const toggleTheme = () => {
     }
 };
 
-if (localStorage.getItem("theme") === "light") {
+if (localStorage.getItem("theme") === "dark") {
     toggleTheme();
 }
 

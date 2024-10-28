@@ -14,6 +14,11 @@
 
 	--tile-background-color: #d0d5dd;
 	--tile-highlight-color: #939393;
+
+	--modal-text-color: #344054;
+
+	--main-color: #a9efc5;
+	--main-color-text: #079455;
 }
 
 body.dark-mode {
@@ -36,6 +41,8 @@ body.dark-mode {
 	--button-hover-background: #1a1a1a;
 	--button-hover-text-color: #fff;
 	--button-border: #2c2c2c;
+
+	--modal-text-color: #e4e7ec;
 }
 
 * {
@@ -83,6 +90,17 @@ body {
 .headline h1 {
 	color: var(--title-color);
 	font-size: 3.6rem;
+}
+
+.btn {
+	padding: 0.8rem 1.6rem;
+	background-color: var(--main-color);
+	color: var(--main-color-text);
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	font-size: 1.8rem;
+	font-weight: 600;
 }
 
 .btn-headline {
@@ -361,7 +379,110 @@ body {
 	background-color: var(--tile-highlight-color);
 }
 
+.modal {
+	visibility: visible;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+
+	max-height: 90vh;
+
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+	border-radius: 10px;
+	z-index: 10;
+	background-color: var(--bg-color);
+
+	width: min(90%, 50rem);
+
+	opacity: 1;
+	transition: opacity 0.5s, visibility 0s;
+
+	text-align: center;
+}
+.modal-content {
+	overflow-y: auto;
+	flex-grow: 1;
+	padding: 2rem;
+
+	color: var(--modal-text-color);
+}
+.win-text {
+	text-align: center;
+}
+
+.win-title,
+.help-title {
+	font-size: 2.4rem;
+	font-weight: 600;
+	margin-bottom: 2rem;
+}
+
+.win-text,
+.help-text {
+	font-size: 1.6rem;
+	margin-bottom: 2rem;
+}
+
+.help-gif {
+	width: 100%;
+	border-radius: 15px;
+	margin-bottom: 2rem;
+}
+.special {
+	font-weight: 600;
+}
+
+.timer {
+	font-size: 2.4rem;
+	font-weight: 800;
+	margin-bottom: 2rem;
+	color: var(--modal-text-color);
+	position: fixed;
+
+	bottom: 1rem;
+	left: 50%;
+	transform: translateX(-50%);
+
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+.overlay {
+	position: absolute;
+	visibility: visible;
+	opacity: 1;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.8);
+	backdrop-filter: blur(3px);
+	z-index: 5;
+	transition: opacity 0.5s, visibility 0s;
+}
+
+.hidden {
+	/* display: none; */
+	visibility: hidden;
+	opacity: 0;
+}
+
 /* /////////////////////////////// */
+/* /////////////////////////////// */
+/* /////////////////////////////// */
+/* /////////////////////////////// */
+/* /////////////////////////////// */
+
 ::-webkit-scrollbar-track {
 	-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
 	border-radius: 10px;

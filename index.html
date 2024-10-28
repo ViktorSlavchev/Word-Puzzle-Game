@@ -49,6 +49,32 @@
 			<div class="game-holder">
 				<div class="game-board grid-4"></div>
 			</div>
+
+			<p class="timer">00:00</p>
+
+			<div class="modal win-modal hidden">
+				<div class="modal-content">
+					<p class="win-title">Congratulations!</p>
+					<p class="win-text"><span class="message-text">You completed today's WordPuzzle </span> in <span class="special-timer">00:00</span>. Well done!</p>
+					<div class="button-holder">
+						<button class="btn btn-play-again">Play Again</button>
+						<button class="btn btn-share">Share</button>
+					</div>
+				</div>
+			</div>
+
+			<div class="modal help-modal hidden">
+				<div class="modal-content">
+					<p class="help-title">How to Play</p>
+					<p class="help-text">Your goal in WordPuzzle is to color the entire grid, ensuring each color has the same sum. To do that, you can only connect squares horizontally or vertically.</p>
+					<img src="images/help.gif" class="help-gif" />
+					<p class="help-text">You can click on a square or drag to color/uncolor multiple squares at once.</p>
+					<div class="button-holder">
+						<button class="btn btn-close">Close</button>
+					</div>
+				</div>
+			</div>
+			<div class="overlay hidden"></div>
 		</div>
 	</body>
 </html>

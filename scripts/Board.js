@@ -119,11 +119,12 @@ class Board {
 	placePiece(piece, square) {
 		const { x, y } = square.dataset;
 
+		const bodyRect = document.body.getBoundingClientRect();
 		if (piece.type === "TShape") {
 			square = this.getSqureByCoordinates(parseInt(x) - 1, parseInt(y));
-			piece.move(square.getBoundingClientRect().x, square.getBoundingClientRect().y);
+			piece.move(square.getBoundingClientRect().x - bodyRect.x, square.getBoundingClientRect().y - bodyRect.y);
 		} else {
-			piece.move(square.getBoundingClientRect().x, square.getBoundingClientRect().y);
+			piece.move(square.getBoundingClientRect().x - bodyRect.x, square.getBoundingClientRect().y - bodyRect.y);
 		}
 
 		for (let i = 0; i < piece.bricks.length; i++) {
@@ -137,7 +138,7 @@ class Board {
 		piece.isPlaced = true;
 		piece.boardPosition = { x: parseInt(x), y: parseInt(y) };
 		piece.element.style.zIndex = 15;
-		console.log(this.boardSquares);
+
 	}
 
 	unPlacePiece(piece) {
@@ -195,6 +196,14 @@ class Board {
 			}
 		}
 		return words.filter((word) => word.end[0] - word.start[0] > 0 || word.end[1] - word.start[1] > 0);
+	}
+
+	reset() {
+		this.boardSquares.forEach((row) => {
+			row.fill(null);
+		});
+
+
 	}
 
 	checkIfSolved() {

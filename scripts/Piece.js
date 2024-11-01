@@ -50,10 +50,11 @@ class Piece {
 		this.x = x;
 		this.y = y;
 
-		requestAnimationFrame(() => {
-			this.element.style.left = `${x}px`;
-			this.element.style.top = `${y}px`;
-		});
+
+		requestAnimationFrame(function () {
+			this.element.style.left = `${this.x}px`;
+			this.element.style.top = `${this.y}px`;
+		}.bind(this));
 	}
 
 	moveWithOutAnimation(x, y) {
@@ -62,8 +63,17 @@ class Piece {
 		this.y = y;
 		this.element.style.left = `${x}px`;
 		this.element.style.top = `${y}px`;
+
 		setTimeout(() => {
 			this.element.style.transition = "top 0.1s, left 0.1s";
 		}, 50);
+	}
+
+	setStartingPostion(x, y) {
+		this.startingX = x;
+		this.startingY = y;
+	}
+	resetPosition() {
+		this.move(this.startingX, this.startingY);
 	}
 }

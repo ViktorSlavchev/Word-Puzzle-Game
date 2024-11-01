@@ -61,7 +61,6 @@ function doesItOverlap(x, y, width, height, pieces) {
         const otherPiece = pieces[i].element.getBoundingClientRect();
 
         if (doTheyOverlap(x, y, width, height, otherPiece.x, otherPiece.y, otherPiece.width, otherPiece.height)) {
-            console.log("Overlap", x, y, width, height, otherPiece.x, otherPiece.y, otherPiece.width, otherPiece.height);
             return true;
         }
     }
@@ -69,19 +68,16 @@ function doesItOverlap(x, y, width, height, pieces) {
 }
 
 function getPiecesPostions(pieces) {
-    console.log(pieces);
     const maxHeight = Math.max(...pieces.map(piece => piece.element.getBoundingClientRect().height));
     const maxWidth = Math.max(...pieces.map(piece => piece.element.getBoundingClientRect().width));
 
 
     const spawningArea = getSpawningArea().filter(area => area.width > maxWidth && area.height > maxHeight);
-    console.log(spawningArea);
 
     let offX = 0;
     let offY = 0;
     let areaIndex = 0;
 
-    console.log(maxHeight, maxWidth);
 
     for (let i = 0; i < pieces.length; i++) {
         const piece = pieces[i];
@@ -97,7 +93,6 @@ function getPiecesPostions(pieces) {
                 if (offY + pieceRect.height > spawningArea[areaIndex].y + spawningArea[areaIndex].height) {
                     offY = 0;
                     areaIndex++;
-                    console.log(areaIndex)
                     if (areaIndex >= spawningArea.length) {
                         console.error("No more space for pieces");
                         offX = 0;
@@ -110,7 +105,7 @@ function getPiecesPostions(pieces) {
         }
 
         piece.moveWithOutAnimation(offX + spawningArea[areaIndex].x, offY + spawningArea[areaIndex].y);
-        console.log("Placed", piece.type, "at", offX + spawningArea[areaIndex].x, offY + spawningArea[areaIndex].y, areaIndex);
+        piece.setStartingPostion(offX + spawningArea[areaIndex].x, offY + spawningArea[areaIndex].y);
         offX += pieceRect.width + 10;
         if (offX + pieceRect.width > spawningArea[areaIndex].x + spawningArea[areaIndex].width) {
             offX = 0;

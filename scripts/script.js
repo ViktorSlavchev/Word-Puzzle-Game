@@ -86,17 +86,27 @@ document.addEventListener("touchend", onMouseUp);
 
 window.addEventListener("resize", () => {
 	// Update positions for each piece for the new window size and square postiotions
+	const bodyRect = document.body.getBoundingClientRect();
 	pieces.forEach((piece, ind) => {
 		if (piece.isPlaced) {
 			const { x, y } = piece.boardPosition;
 			const square = board.getSqureByCoordinates(piece.type === "TShape" ? x - 1 : x, y);
-			piece.moveWithOutAnimation(square.getBoundingClientRect().x, square.getBoundingClientRect().y);
+			piece.moveWithOutAnimation(square.getBoundingClientRect().x - bodyRect.x, square.getBoundingClientRect().y - bodyRect.y);
 		}
 	});
 
 	document.querySelector(".controls-holder").style.width = document.querySelector(".game-board").getBoundingClientRect().width + "px";
-
-
 });
 
 
+document.querySelector(".btn-reset").addEventListener("click", () => {
+	pieces.forEach((piece) => {
+		if (piece.isPlaced) {
+			board.unPlacePiece(piece);
+		}
+		piece.resetPosition();
+	});
+
+	board.reset();
+	board.removeHighlights();
+});

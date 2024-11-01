@@ -206,7 +206,30 @@ class Board {
 
 	}
 
-	checkIfSolved() {
-		console.log(this.getWords());
+	checkIfSolved(pieces) {
+		// Check if all the pieces are used
+		const allPiecesUsed = pieces.every((piece) => piece.isPlaced);
+		if (!allPiecesUsed) return false;
+
+		// Check if all the words are valid
+		const words = this.getWords();
+		console.log(words)
+
+		const allWordsValid = words.every((word) => {
+			let currentWord = "";
+			for (let x = word.start[1]; x <= word.end[1]; x++) {
+				for (let y = word.start[0]; y <= word.end[0]; y++) {
+					if (!this.boardSquares[y][x]) return false;
+					const currentBS = this.boardSquares[y][x];
+					const letter = currentBS.bricks.find((brick) => {
+						return brick.x === x - currentBS.boardPosition.x && brick.y === y - currentBS.boardPosition.y;
+					}).letter;
+					currentWord += letter;
+				}
+			}
+			return fulldictionary.includes(currentWord);
+		});
+
+		return allWordsValid;
 	}
 }

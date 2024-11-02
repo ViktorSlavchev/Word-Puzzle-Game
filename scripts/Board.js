@@ -139,6 +139,12 @@ class Board {
 		piece.boardPosition = { x: parseInt(x), y: parseInt(y) };
 		piece.element.style.zIndex = 15;
 
+		if (this.checkIfSolved(pieces)) {
+			setTimeout(() => {
+				showWinModal()
+			}, 500);
+		}
+
 	}
 
 	unPlacePiece(piece) {

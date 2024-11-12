@@ -55,10 +55,10 @@ const toggleTheme = () => {
     if (document.body.classList.contains("dark-mode")) {
         localStorage.setItem("theme", "dark");
 
-        // document.querySelector(".help-gif").src = "images/help.gif";
+        document.querySelector(".help-gif").src = "images/WordstackLight.gif";
     } else {
         localStorage.setItem("theme", "light");
-        // document.querySelector(".help-gif").src = "images/help_white.gif";
+        document.querySelector(".help-gif").src = "images/WordstackDark.gif";
     }
 };
 

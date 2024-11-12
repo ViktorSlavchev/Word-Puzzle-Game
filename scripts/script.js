@@ -29,7 +29,7 @@ if (params.has("free-play")) {
 	document.querySelector(".controlls-date").textContent = formatDate(new Date());
 }
 
-const boardSize = +params.get("size") || 5;
+const boardSize = +params.get("size") || (diffcultyString === "easy" ? 4 : diffcultyString === "medium" ? 5 : 6);
 const levelPieces = getLevel(boardSize).pieces;
 console.log(levelPieces);
 

@@ -96,7 +96,12 @@ window.addEventListener("resize", () => {
 	});
 
 	document.querySelector(".controls-holder").style.width = document.querySelector(".game-board").getBoundingClientRect().width + "px";
+	document.querySelector(".headline").style.width = Math.max(document.querySelector(".game-board").getBoundingClientRect().width, document.querySelector(".headline h1").getBoundingClientRect().width + 120) + "px";
 });
+
+
+document.querySelector(".controls-holder").style.width = document.querySelector(".game-board").getBoundingClientRect().width + "px";
+document.querySelector(".headline").style.width = Math.max(document.querySelector(".game-board").getBoundingClientRect().width, document.querySelector(".headline h1").getBoundingClientRect().width + 120) + "px";
 
 
 document.querySelector(".btn-reset").addEventListener("click", () => {

@@ -69,7 +69,7 @@ class Piece {
 		}, 50);
 	}
 
-	setStartingPostion(x, y) {
+	setStartingPosition(x, y) {
 		this.startingX = x;
 		this.startingY = y;
 	}

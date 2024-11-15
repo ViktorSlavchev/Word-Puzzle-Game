@@ -2,120 +2,104 @@ function getSpawningArea() {
     const boardElement = document.querySelector(".game-board");
     const boardRect = boardElement.getBoundingClientRect();
 
-    const testingElement = document.querySelector(".testing-element");
-
     const leftOfBoard = {
         x: 10,
         y: boardRect.y - 15,
         width: boardRect.x - 20,
         height: boardRect.height
-    }
+    };
 
     const rightOfBoard = {
         x: boardRect.x + boardRect.width + 10,
         y: boardRect.y - 15,
         width: window.innerWidth - (boardRect.x + boardRect.width) - 20,
         height: boardRect.height
-    }
+    };
 
     const bottomOfBoard = {
         x: 10,
         y: boardRect.y + boardRect.height + 10,
         width: window.innerWidth - 20,
         height: window.innerHeight - (boardRect.y + boardRect.height) - 20
-    }
+    };
 
+    return [leftOfBoard, rightOfBoard, bottomOfBoard];
+}
 
-    if (testingElement) {
-        testingElement.style.left = `${bottomOfBoard.x}px`;
-        testingElement.style.top = `${bottomOfBoard.y}px`;
-        testingElement.style.width = `${bottomOfBoard.width}px`;
-        testingElement.style.height = `${bottomOfBoard.height}px`;
-    }
-
-    return [
-        leftOfBoard,
-        rightOfBoard,
-        bottomOfBoard
-    ]
+function isFullyVisibleOnScreen(piece, x, y) {
+    const pieceRect = piece.element.getBoundingClientRect();
+    return (
+        x >= 0 &&
+        y >= 0 &&
+        x + pieceRect.width <= window.innerWidth &&
+        y + pieceRect.height <= window.innerHeight
+    );
 }
 
 function doesItFit(piece, area, x, y) {
     const pieceRect = piece.element.getBoundingClientRect();
-    const pieceWidth = pieceRect.width;
-    const pieceHeight = pieceRect.height;
-
-    if (x + pieceWidth > area.x + area.width || y + pieceHeight > area.y + area.height) {
-        return false;
-    }
-
-    return true;
+    return (
+        x >= area.x &&
+        y >= area.y &&
+        x + pieceRect.width <= area.x + area.width &&
+        y + pieceRect.height <= area.y + area.height &&
+        isFullyVisibleOnScreen(piece, x, y)
+    );
 }
 
-function doTheyOverlap(x1, y1, width1, height1, x2, y2, width2, height2) {
-    return !((x1 + width1 < x2 || x2 + width2 < x1 || y1 + height1 < y2 || y2 + height2 < y1));
+function getRandomPosition(area, piece) {
+    const pieceRect = piece.getBoundingClientRect();
+
+    // Generate a random position within the area.
+    const randomX = Math.random() * (area.width - pieceRect.width) + area.x;
+    const randomY = Math.random() * (area.height - pieceRect.height) + area.y;
+
+    return { x: randomX, y: randomY };
 }
 
-function doesItOverlap(x, y, width, height, pieces) {
-    for (let i = 0; i < pieces.length; i++) {
-        const otherPiece = pieces[i].element.getBoundingClientRect();
+function spawnPiecesRandomly(pieces) {
+    const spawningAreas = getSpawningArea();
 
-        if (doTheyOverlap(x, y, width, height, otherPiece.x, otherPiece.y, otherPiece.width, otherPiece.height)) {
-            return true;
+    for (const piece of pieces) {
+        console.log(piece);
+
+        // Find an area that can fit the piece.
+        const area = spawningAreas.sort(() => Math.random() - 0.5).find(area =>
+            area.width >= piece.element.getBoundingClientRect().width &&
+            area.height >= piece.element.getBoundingClientRect().height
+        );
+
+        if (!area) {
+            console.error("No suitable area found for piece:", piece);
+            continue;
         }
-    }
-    return false;
-}
 
+        let position;
+        let attempts = 0;
+        do {
+            position = getRandomPosition(area, piece.element);
+            attempts++;
+        } while (!doesItFit(piece, area, position.x, position.y) && attempts < 100);
+
+        if (attempts >= 100) {
+            console.error("Failed to place piece:", piece);
+            continue;
+        }
+
+        console.log(piece)
+        piece.moveWithOutAnimation(position.x, position.y);
+        piece.setStartingPosition(position.x, position.y);
+    }
+}
 function getPiecesPostions(pieces) {
-    const maxHeight = Math.max(...pieces.map(piece => piece.element.getBoundingClientRect().height));
-    const maxWidth = Math.max(...pieces.map(piece => piece.element.getBoundingClientRect().width));
-
-
-    const spawningArea = getSpawningArea().filter(area => area.width > maxWidth && area.height > maxHeight);
-
-    let offX = 0;
-    let offY = 0;
-    let areaIndex = 0;
-
-
-    for (let i = 0; i < pieces.length; i++) {
-        const piece = pieces[i];
-        const pieceElement = piece.element;
-        const pieceRect = pieceElement.getBoundingClientRect();
-
-
-        while (!doesItFit(piece, spawningArea[areaIndex], offX, offY) || doesItOverlap(spawningArea[areaIndex].x + offX, spawningArea[areaIndex].y + offY, pieceRect.width, pieceRect.height, pieces.slice(0, i))) {
-            offX += 10;
-            if (offX + pieceRect.width > spawningArea[areaIndex].x + spawningArea[areaIndex].width) {
-                offX = 0;
-                offY += 10;
-                if (offY + pieceRect.height > spawningArea[areaIndex].y + spawningArea[areaIndex].height) {
-                    offY = 0;
-                    areaIndex++;
-                    if (areaIndex >= spawningArea.length) {
-                        console.error("No more space for pieces");
-                        offX = 0;
-                        offY = 0;
-                        areaIndex = 0;
-                        break;
-                    }
-                }
-            }
-        }
-
-        piece.moveWithOutAnimation(offX + spawningArea[areaIndex].x, offY + spawningArea[areaIndex].y);
-        piece.setStartingPostion(offX + spawningArea[areaIndex].x, offY + spawningArea[areaIndex].y);
-        offX += pieceRect.width + 10;
-        if (offX + pieceRect.width > spawningArea[areaIndex].x + spawningArea[areaIndex].width) {
-            offX = 0;
-            offY += pieceRect.height + 10;
-            if (offY + piece.height > spawningArea[areaIndex].y + spawningArea[areaIndex].height) {
-                offY = 0;
-                areaIndex++;
-            }
-        }
-
-
-    }
+    spawnPiecesRandomly(pieces);
+    return pieces.map(piece => {
+        const pieceRect = piece.element.getBoundingClientRect();
+        return {
+            x: pieceRect.x,
+            y: pieceRect.y,
+            width: pieceRect.width,
+            height: pieceRect.height
+        };
+    });
 }

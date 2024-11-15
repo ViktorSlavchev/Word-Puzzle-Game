@@ -115,3 +115,9 @@ document.querySelector(".btn-reset").addEventListener("click", () => {
 	board.reset();
 	board.removeHighlights();
 });
+
+
+if (localStorage.getItem("show-tutorial") !== "false") {
+	showHelpModal();
+	localStorage.setItem("show-tutorial", "false");
+}

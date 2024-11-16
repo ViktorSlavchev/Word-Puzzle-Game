@@ -1,26 +1,28 @@
 function getSpawningArea() {
     const boardElement = document.querySelector(".game-board");
     const boardRect = boardElement.getBoundingClientRect();
+    const viewportWidth = window.visualViewport?.width || window.innerWidth;
+    const viewportHeight = window.visualViewport?.height || window.innerHeight;
 
     const leftOfBoard = {
         x: 10,
-        y: boardRect.y - 15,
-        width: boardRect.x - 20,
-        height: boardRect.height
+        y: Math.max(boardRect.y - 15, 0),
+        width: Math.max(boardRect.x - 20, 0),
+        height: Math.min(boardRect.height, viewportHeight)
     };
 
     const rightOfBoard = {
-        x: boardRect.x + boardRect.width + 10,
-        y: boardRect.y - 15,
-        width: window.innerWidth - (boardRect.x + boardRect.width) - 20,
-        height: boardRect.height
+        x: Math.min(boardRect.x + boardRect.width + 10, viewportWidth),
+        y: Math.max(boardRect.y - 15, 0),
+        width: Math.max(viewportWidth - (boardRect.x + boardRect.width) - 20, 0),
+        height: Math.min(boardRect.height, viewportHeight)
     };
 
     const bottomOfBoard = {
         x: 10,
-        y: boardRect.y + boardRect.height + 10,
-        width: window.innerWidth - 20,
-        height: window.innerHeight - (boardRect.y + boardRect.height) - 20
+        y: Math.min(boardRect.y + boardRect.height + 10, viewportHeight),
+        width: Math.max(viewportWidth - 20, 0),
+        height: Math.max(viewportHeight - (boardRect.y + boardRect.height) - 20, 0)
     };
 
     return [leftOfBoard, rightOfBoard, bottomOfBoard];
@@ -28,11 +30,14 @@ function getSpawningArea() {
 
 function isFullyVisibleOnScreen(piece, x, y) {
     const pieceRect = piece.element.getBoundingClientRect();
+    const viewportWidth = window.visualViewport?.width || window.innerWidth;
+    const viewportHeight = window.visualViewport?.height || window.innerHeight;
+
     return (
         x >= 0 &&
         y >= 0 &&
-        x + pieceRect.width <= window.innerWidth &&
-        y + pieceRect.height <= window.innerHeight
+        x + pieceRect.width <= viewportWidth &&
+        y + pieceRect.height <= viewportHeight
     );
 }
 
@@ -49,10 +54,8 @@ function doesItFit(piece, area, x, y) {
 
 function getRandomPosition(area, piece) {
     const pieceRect = piece.getBoundingClientRect();
-
-    // Generate a random position within the area.
-    const randomX = Math.random() * (area.width - pieceRect.width) + area.x;
-    const randomY = Math.random() * (area.height - pieceRect.height) + area.y;
+    const randomX = Math.floor(Math.random() * (area.width - pieceRect.width)) + area.x;
+    const randomY = Math.floor(Math.random() * (area.height - pieceRect.height)) + area.y;
 
     return { x: randomX, y: randomY };
 }
@@ -61,12 +64,10 @@ function spawnPiecesRandomly(pieces) {
     const spawningAreas = getSpawningArea();
 
     for (const piece of pieces) {
-        console.log(piece);
+        const pieceRect = piece.element.getBoundingClientRect();
 
-        // Find an area that can fit the piece.
-        const area = spawningAreas.sort(() => Math.random() - 0.5).find(area =>
-            area.width >= piece.element.getBoundingClientRect().width &&
-            area.height >= piece.element.getBoundingClientRect().height
+        const area = spawningAreas.find(area =>
+            area.width >= pieceRect.width && area.height >= pieceRect.height
         );
 
         if (!area) {
@@ -86,20 +87,20 @@ function spawnPiecesRandomly(pieces) {
             continue;
         }
 
-        console.log(piece)
         piece.moveWithOutAnimation(position.x, position.y);
         piece.setStartingPosition(position.x, position.y);
     }
 }
+
 function getPiecesPostions(pieces) {
     spawnPiecesRandomly(pieces);
     return pieces.map(piece => {
         const pieceRect = piece.element.getBoundingClientRect();
         return {
-            x: pieceRect.x,
-            y: pieceRect.y,
-            width: pieceRect.width,
-            height: pieceRect.height
+            x: Math.round(pieceRect.x),
+            y: Math.round(pieceRect.y),
+            width: Math.round(pieceRect.width),
+            height: Math.round(pieceRect.height)
         };
     });
 }

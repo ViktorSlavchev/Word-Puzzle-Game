@@ -73,6 +73,35 @@ function getLevel(boardSize = 4) {
 
 	let placedPieces = [];
 
+
+	function isAdjecentToPlacedPiece(board, piece, offsetX, offsetY) {
+		const adjacentOffsets = [
+			{ x: -1, y: 0 }, // Left
+			{ x: 1, y: 0 },  // Right
+			{ x: 0, y: -1 }, // Up
+			{ x: 0, y: 1 },  // Down
+		];
+
+		for (const block of piece.blocks) {
+			const x = offsetX + block.x;
+			const y = offsetY + block.y;
+
+			for (const offset of adjacentOffsets) {
+				const adjX = x + offset.x;
+				const adjY = y + offset.y;
+
+				if (adjX >= 0 && adjY >= 0 && adjX < boardSize && adjY < boardSize) {
+					if (board[adjY][adjX].pieceId !== null) {
+						return true;
+					}
+				}
+			}
+		}
+
+		return false; // No adjacent piece found
+	}
+
+
 	// Generate field and find words in rows and columns
 	function generateField() {
 		// Reset board
@@ -80,6 +109,7 @@ function getLevel(boardSize = 4) {
 
 		let piecesToPlace = [...piecesTemplates];
 		shuffleArray(piecesToPlace);
+		let isFirstPiece = true;
 
 		for (let i = 0; i < piecesToPlace.length; i++) {
 			const piece = piecesToPlace[i];
@@ -96,9 +126,12 @@ function getLevel(boardSize = 4) {
 			// Shuffle positions to randomize the placement order
 			shuffleArray(positions);
 
+
 			// Try to place the piece in each position
 			for (const pos of positions) {
-				if (canPlacePiece(board, piece, pos.x, pos.y)) {
+				// console.log(`Trying to place piece: ${piece.name} at ${pos.x}, ${pos.y}`, isFirstPiece, isAdjecentToPlacedPiece(board, piece, pos.x, pos.y));
+				if (canPlacePiece(board, piece, pos.x, pos.y) && (isFirstPiece || isAdjecentToPlacedPiece(board, piece, pos.x, pos.y))) {
+					isFirstPiece = false;
 					placePiece(board, piece, pos.x, pos.y, i + 1);
 					placedPieces.push({ x: pos.x, y: pos.y, piece });
 					placed = true;

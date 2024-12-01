@@ -1,3 +1,4 @@
+
 async function copyToClipboard(text) {
     if (navigator.clipboard && window.isSecureContext) {
         try {
@@ -18,12 +19,19 @@ async function copyToClipboard(text) {
     }
 }
 
+function getLink() {
+    let link = `${window.location.href}?${addedParam}`;
+    if (document.querySelector(".btn-gamemode").textContent.trim() === "Free Play") {
+        link = `${window.location.origin}/?free-play&difficulty=${diffcultyString}&seed=${seed}&${addedParam}`;
+    }
+    return link;
+}
 document.querySelector(".btn-share").addEventListener("click", async () => {
     console.log(navigator.share);
-    let message = `I completed today's ${GAME_NAME} in ${formatTime(timer)}. Think you can beat my time? Give it a try: ${window.location.href}`;
+    let message = `I completed today's ${GAME_NAME} in ${formatTime(timer)}. Think you can beat my time? Give it a try: ${getLink()}`;
 
     if (document.querySelector(".btn-gamemode").textContent.trim() === "Free Play") {
-        message = `I completed ${GAME_NAME} on ${diffcultyString[0].toUpperCase() + diffcultyString.slice(1)} Mode in ${formatTime(timer)}. Think you can beat my time? Give it a try: ${window.location.origin}/?free-play&difficulty=${diffcultyString}&seed=${seed}`;
+        message = `I completed ${GAME_NAME} on ${diffcultyString[0].toUpperCase() + diffcultyString.slice(1)} Mode in ${formatTime(timer)}. Think you can beat my time? Give it a try: ${getLink()}`;
     }
     if (navigator.share) {
         try {

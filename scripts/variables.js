@@ -1,1 +1,2 @@
-const GAME_NAME = "WordPuzzle";
+const GAME_NAME = "Fragment";
+let addedParam = "";

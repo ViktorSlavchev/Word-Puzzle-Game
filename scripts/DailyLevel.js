@@ -11,7 +11,7 @@ function setUpDailyGame() {
     if (day == 6) difficulty = "medium";
     if (day == 0) difficulty = "hard";
 
-    date.setHours(3, 0, 0, 0);
+    date.setHours(3, 0, 0, 1);
     Math.seedrandom(date.toISOString());
 
     return difficulty;

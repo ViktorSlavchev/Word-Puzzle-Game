@@ -3,12 +3,13 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Document</title>
+		<title>Fragment</title>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/seedrandom/3.0.5/seedrandom.min.js"></script>
 		<script src="scripts/fulldictionary.js" defer></script>
 		<script src="scripts/dictonary.js" defer></script>
 		<script src="scripts/variables.js" defer></script>
 		<script src="scripts/Modal.js" defer></script>
+		<script src="scripts/Share.js" defer></script>
 		<script src="scripts/DailyLevel.js" defer></script>
 		<script src="scripts/levelGen.js" defer></script>
 		<script src="scripts/SpwanPieces.js" defer></script>
@@ -16,8 +17,11 @@
 		<script src="scripts/Piece.js" defer></script>
 		<script src="scripts/script.js" defer></script>
 		<script src="scripts/timer.js" defer></script>
+		<script src="scripts/Giveaway.js" defer></script>
 		<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
 		<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
+		<script defer data-domain="playfragment.com" src="https://plausible.io/js/script.js"></script>
 
 		<link rel="stylesheet" href="css/styles.css" />
 	</head>
@@ -27,7 +31,7 @@
 		<div class="container">
 			<div class="headline">
 				<button class="btn-headline btn-theme"><ion-icon name="sunny"></ion-icon></button>
-				<h1>WordPuzzle</h1>
+				<h1>Fragment</h1>
 				<button class="btn-headline btn-help"><ion-icon name="information-circle-outline"></ion-icon></button>
 			</div>
 
@@ -57,10 +61,31 @@
 
 			<p class="timer">00:00</p>
 
+			<!-- <div class="modal win-modal hidden">
+				<div class="modal-content">
+					<p class="win-title">Congratulations!</p>
+					<p class="win-text"><span class="message-text">You completed today's Fragment </span> in <span class="special-timer">00:00</span>. Well done!</p>
+					<div class="button-holder">
+						<button class="btn btn-play-again">Play Again</button>
+						<button class="btn btn-share">Share</button>
+					</div>
+				</div>
+			</div> -->
+
+			<!-- Giveaway Modal -->
 			<div class="modal win-modal hidden">
 				<div class="modal-content">
 					<p class="win-title">Congratulations!</p>
-					<p class="win-text"><span class="message-text">You completed today's WordPuzzle </span> in <span class="special-timer">00:00</span>. Well done!</p>
+					<p class="win-text"><span class="message-text">You completed today's Fragment </span> in <span class="special-timer">00:00</span>. Well done!</p>
+					<div class="giveaway-stuff">
+						<p class="giveaway-text nomrg">Do you want to participate in a giveaway?</p>
+						<p class="giveaway-text">Check the rules <a href="#">here</a>.</p>
+						<div class="giveaway-holder">
+							<input class="giveaway-x-tag" type="text" placeholder="X/Twitter tag" />
+							<button class="giveaway-submit"><ion-icon name="send"></ion-icon></button>
+						</div>
+						<div class="giveaway-message"></div>
+					</div>
 					<div class="button-holder">
 						<button class="btn btn-play-again">Play Again</button>
 						<button class="btn btn-share">Share</button>
@@ -71,7 +96,7 @@
 			<div class="modal help-modal hidden">
 				<div class="modal-content">
 					<p class="help-title">How to Play</p>
-					<p class="help-text">Your goal in WordPuzzle is to color the entire grid, ensuring each color has the same sum. To do that, you can only connect squares horizontally or vertically.</p>
+					<p class="help-text">Your goal in Fragment is to color the entire grid, ensuring each color has the same sum. To do that, you can only connect squares horizontally or vertically.</p>
 					<img src="images/WordstackLight.gif" class="help-gif" />
 					<p class="help-text">You can click on a square or drag to color/uncolor multiple squares at once.</p>
 					<div class="button-holder">

@@ -139,7 +139,9 @@ class Board {
 		piece.boardPosition = { x: parseInt(x), y: parseInt(y) };
 		piece.element.style.zIndex = 15;
 
+
 		if (this.checkIfSolved(pieces)) {
+			console.log("Solved")
 			setTimeout(() => {
 				showWinModal()
 			}, 500);
@@ -216,6 +218,7 @@ class Board {
 		// Check if all the pieces are used
 		const allPiecesUsed = pieces.every((piece) => piece.isPlaced);
 		if (!allPiecesUsed) return false;
+
 
 		// Check if all the words are valid
 		const words = this.getWords();

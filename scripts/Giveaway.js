@@ -27,6 +27,7 @@ async function setUpGiveaway() {
 
         console.log(tag);
 
+        localStorage.setItem("lastTag", tag);
         addedParam = `refaral=${tag}`;
 
         try {
@@ -51,7 +52,7 @@ async function setUpGiveaway() {
     });
 
 
-    if (params.has("refaral") && localStorage.getItem("lastDatePlayed") !== formatDate(new Date())) {
+    if (params.has("refaral") && localStorage.getItem("lastDatePlayed") !== formatDate(new Date()) && localStorage.getItem("lastTag") !== params.get("refaral")) {
         const refaralTag = params.get("refaral");
         console.log("Refaral tag:", refaralTag);
         try {

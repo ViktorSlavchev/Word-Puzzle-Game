@@ -1,5 +1,5 @@
 const isGiveaway = true;
-const serverURL = 'http://localhost:3000';
+const serverURL = 'https://fragment-server.onrender.com';
 
 async function setUpGiveaway() {
     if (!isGiveaway) {

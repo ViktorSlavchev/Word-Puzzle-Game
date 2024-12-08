@@ -18,7 +18,7 @@ if (params.has("free-play")) {
 	}
 
 	Math.seedrandom(seed);
-	console.log("Seed:", seed);
+	// console.log("Seed:", seed);
 
 	document.querySelector(".btn-gamemode span").textContent = "Free Play";
 	document.querySelector(".controlls-date").classList.add("displaynone");
@@ -31,7 +31,7 @@ if (params.has("free-play")) {
 
 const boardSize = +params.get("size") || (diffcultyString === "easy" ? 4 : diffcultyString === "medium" ? 5 : 6);
 const levelPieces = getLevel(boardSize).pieces;
-console.log(levelPieces);
+// console.log(levelPieces);
 
 
 const board = new Board(boardSize);

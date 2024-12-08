@@ -141,7 +141,7 @@ class Board {
 
 
 		if (this.checkIfSolved(pieces)) {
-			console.log("Solved")
+			// console.log("Solved")
 			setTimeout(() => {
 				showWinModal()
 			}, 500);
@@ -222,7 +222,7 @@ class Board {
 
 		// Check if all the words are valid
 		const words = this.getWords();
-		console.log(words)
+		// console.log(words)
 
 		const allWordsValid = words.every((word) => {
 			let currentWord = "";

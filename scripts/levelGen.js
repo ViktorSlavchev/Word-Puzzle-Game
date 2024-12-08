@@ -144,8 +144,8 @@ function getLevel(boardSize = 4) {
 			}
 		}
 
-		console.log("Generated Field:");
-		printBoard(board);
+		// console.log("Generated Field:");
+		// printBoard(board);
 		const words = getWords(board);
 		// console.log("Words:", JSON.stringify(words), "");
 
@@ -437,7 +437,7 @@ function getLevel(boardSize = 4) {
 	function generateLevel() {
 		const maxAttempts = 50; // Limit the number of attempts
 		for (let attempt = 1; attempt <= maxAttempts; attempt++) {
-			console.log(`Attempt ${attempt} `);
+			// console.log(`Attempt ${attempt} `);
 			board = Array.from({ length: boardSize }, () => Array.from({ length: boardSize }, () => ({ pieceId: null, letter: null })));
 			placedPieces = [];
 			generateField();
@@ -449,17 +449,17 @@ function getLevel(boardSize = 4) {
 
 			const test = placeWords(board, words, trieRoot);
 			if (test) {
-				console.log("Final Board: ");
+				// console.log("Final Board: ");
 				printBoard(test);
 
 				// console.log(convertBoardToPieces(test));
 
-				console.log(new Date() - solverStartTime, "ms");
+				// console.log(new Date() - solverStartTime, "ms");
 				return {
 					pieces: convertBoardToPieces(test),
 				};
 			} else {
-				console.log("Solver failed, regenerating field... ");
+				// console.log("Solver failed, regenerating field... ");
 			}
 		}
 		console.error("Failed to generate a solvable level within the maximum attempts.");

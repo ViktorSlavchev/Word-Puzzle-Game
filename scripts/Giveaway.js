@@ -44,7 +44,11 @@ async function setUpGiveaway() {
                 giveawayMessage.innerHTML = `You've entered the giveaway! Share the game to get more entries! <br> <a href="${getLink()}">${getLink()}</a>`;
             } else {
                 const { error } = await response.json();
-                giveawayMessage.textContent = error;
+                if (error === "Tag already exists") {
+                    giveawayMessage.innerHTML = `You've already entered the giveaway! To get more entries share the game! <br> <a href="${getLink()}">${getLink()}</a>`;
+                } else {
+                    giveawayMessage.textContent = error;
+                }
             }
         } catch (err) {
             giveawayMessage.textContent = 'An error occurred';

@@ -13,6 +13,7 @@ function setUpDailyGame() {
 
     date.setHours(3, 0, 0, 1);
     Math.seedrandom(date.toISOString());
+    console.log("Seed:", date.toISOString());
 
     return difficulty;
 }

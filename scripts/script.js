@@ -18,6 +18,7 @@ if (params.has("free-play")) {
 	}
 
 	Math.seedrandom(seed);
+	console.log("Seed:", seed);
 	// console.log("Seed:", seed);
 
 	document.querySelector(".btn-gamemode span").textContent = "Free Play";

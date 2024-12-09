@@ -7,6 +7,7 @@ class TrieNode {
 }
 
 function getLevel(boardSize = 4) {
+	console.log("Generating level with board size:", boardSize);
 	function buildTrie(dictionary) {
 		const root = new TrieNode();
 		for (const word of dictionary) {

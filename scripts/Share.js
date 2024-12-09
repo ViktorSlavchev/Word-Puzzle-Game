@@ -20,12 +20,29 @@ async function copyToClipboard(text) {
 }
 
 function getLink() {
-    let link = `${window.location.href}?${addedParam}`;
+    let currentURL = window.location.href;
+
+    // Parse the URL to remove "refaral={anything}"
+    const url = new URL(currentURL);
+    url.searchParams.forEach((value, key) => {
+        if (key === "refaral") {
+            url.searchParams.delete(key);
+        }
+    });
+
+    // Add the new parameter
+    url.searchParams.append(addedParam.split('=')[0], addedParam.split('=')[1]);
+
+    let link = url.toString();
+
     if (document.querySelector(".btn-gamemode").textContent.trim() === "Free Play") {
-        link = `${window.location.origin}/?free-play&difficulty=${diffcultyString}&seed=${seed}&${addedParam}`;
+        const origin = window.location.origin;
+        link = `${origin}/?free-play&difficulty=${diffcultyString}&seed=${seed}&${addedParam}`;
     }
+
     return link;
 }
+
 document.querySelector(".btn-share").addEventListener("click", async () => {
     console.log(navigator.share);
     let message = `I completed today's ${GAME_NAME} in ${formatTime(timer)}. Think you can beat my time? Give it a try: ${getLink()}`;

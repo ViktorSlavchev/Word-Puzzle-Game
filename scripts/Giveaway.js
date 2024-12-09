@@ -29,6 +29,7 @@ async function setUpGiveaway() {
 
         localStorage.setItem("lastTag", tag);
         addedParam = `refaral=${tag}`;
+        console.log(getLink());
 
         try {
             const response = await fetch(`${serverURL}/add-tag`, {

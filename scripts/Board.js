@@ -142,9 +142,12 @@ class Board {
 
 		if (this.checkIfSolved(pieces)) {
 			// console.log("Solved")
+			gameActive = false;
+			document.querySelector(".alert").classList.add("alert-shown");
 			setTimeout(() => {
-				showWinModal()
-			}, 500);
+				showWinModal();
+				document.querySelector(".alert").classList.remove("alert-shown");
+			}, 2500);
 		}
 
 	}

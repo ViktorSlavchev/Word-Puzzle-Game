@@ -12,7 +12,7 @@ async function setUpGiveaway() {
     const giveawayMessage = document.querySelector('.giveaway-message');
 
     giveawayButton.addEventListener('click', async (e) => {
-        let tag = giveawayInput.value.trim().replaceAll(" ", "");
+        let tag = giveawayInput.value.trim().replaceAll(" ", "").toLowerCase();
         console.log(tag)
 
         if (!tag) {

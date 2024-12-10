@@ -22,10 +22,10 @@ async function copyToClipboard(text) {
 function getLink() {
     let currentURL = window.location.href;
 
-    // Parse the URL to remove "refaral={anything}"
+    // Parse the URL to remove "referral={anything}"
     const url = new URL(currentURL);
     url.searchParams.forEach((value, key) => {
-        if (key === "refaral") {
+        if (key === "referral") {
             url.searchParams.delete(key);
         }
     });

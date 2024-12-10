@@ -28,7 +28,7 @@ async function setUpGiveaway() {
         console.log(tag);
 
         localStorage.setItem("lastTag", tag);
-        addedParam = `refaral=${tag}`;
+        addedParam = `referral=${tag}`;
         console.log(getLink());
 
         try {
@@ -57,16 +57,16 @@ async function setUpGiveaway() {
     });
 
 
-    if (params.has("refaral") && localStorage.getItem("lastDatePlayed") !== formatDate(new Date()) && localStorage.getItem("lastTag") !== params.get("refaral")) {
-        const refaralTag = params.get("refaral");
-        console.log("Refaral tag:", refaralTag);
+    if (params.has("referral") && localStorage.getItem("lastDatePlayed") !== formatDate(new Date()) && localStorage.getItem("lastTag") !== params.get("referral")) {
+        const referralTag = params.get("referral");
+        console.log("Referral tag:", referral);
         try {
             const response = await fetch(`${serverURL}/add-entry`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ tag: refaralTag }),
+                body: JSON.stringify({ tag: referralTag }),
             });
 
             if (response.ok) {

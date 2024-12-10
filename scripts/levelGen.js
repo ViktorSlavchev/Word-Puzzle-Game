@@ -8,6 +8,7 @@ class TrieNode {
 
 function getLevel(boardSize = 4) {
 	console.log("Generating level with board size:", boardSize);
+
 	function buildTrie(dictionary) {
 		const root = new TrieNode();
 		for (const word of dictionary) {
@@ -21,7 +22,7 @@ function getLevel(boardSize = 4) {
 		return root;
 	}
 
-	// Build the trie once
+	// Make sure you have a `dictionary` array defined somewhere above
 	const trieRoot = buildTrie(dictionary);
 
 	const piecesTemplates = [
@@ -67,7 +68,9 @@ function getLevel(boardSize = 4) {
 		},
 	];
 
-	let board = Array.from({ length: boardSize }, () => Array.from({ length: boardSize }, () => ({ pieceId: null, letter: null })));
+	let board = Array.from({ length: boardSize }, () =>
+		Array.from({ length: boardSize }, () => ({ pieceId: null, letter: null }))
+	);
 
 	let solverStartTime;
 	const SOLVER_TIME_LIMIT = 5000; // Time limit in milliseconds
@@ -102,11 +105,11 @@ function getLevel(boardSize = 4) {
 		return false; // No adjacent piece found
 	}
 
-
-	// Generate field and find words in rows and columns
 	function generateField() {
 		// Reset board
-		board = Array.from({ length: boardSize }, () => Array.from({ length: boardSize }, () => ({ pieceId: null, letter: null })));
+		board = Array.from({ length: boardSize }, () =>
+			Array.from({ length: boardSize }, () => ({ pieceId: null, letter: null }))
+		);
 
 		let piecesToPlace = [...piecesTemplates];
 		shuffleArray(piecesToPlace);
@@ -127,11 +130,12 @@ function getLevel(boardSize = 4) {
 			// Shuffle positions to randomize the placement order
 			shuffleArray(positions);
 
-
 			// Try to place the piece in each position
 			for (const pos of positions) {
-				// console.log(`Trying to place piece: ${piece.name} at ${pos.x}, ${pos.y}`, isFirstPiece, isAdjecentToPlacedPiece(board, piece, pos.x, pos.y));
-				if (canPlacePiece(board, piece, pos.x, pos.y) && (isFirstPiece || isAdjecentToPlacedPiece(board, piece, pos.x, pos.y))) {
+				if (
+					canPlacePiece(board, piece, pos.x, pos.y) &&
+					(isFirstPiece || isAdjecentToPlacedPiece(board, piece, pos.x, pos.y))
+				) {
 					isFirstPiece = false;
 					placePiece(board, piece, pos.x, pos.y, i + 1);
 					placedPieces.push({ x: pos.x, y: pos.y, piece });
@@ -139,28 +143,12 @@ function getLevel(boardSize = 4) {
 					break;
 				}
 			}
-
-			if (!placed) {
-				// console.log(`Could not place piece: ${piece.name}`);
-			}
+			// If not placed, it's okay. We just skip it.
 		}
 
-		// console.log("Generated Field:");
-		// printBoard(board);
 		const words = getWords(board);
-		// console.log("Words:", JSON.stringify(words), "");
-
-		// Uncomment these lines if you want to run the solver
-		// const test = crosswordSolver(board, words, trieRoot);
-		// if (test) {
-		//     console.log("Final Board:");
-		//     printBoard(test);
-		// } else {
-		//     console.log("No solution found within time limit.");
-		// }
 	}
 
-	// Helper functions for shuffling and printing
 	function shuffleArray(array) {
 		for (let i = array.length - 1; i > 0; i--) {
 			const j = Math.floor(Math.random() * (i + 1));
@@ -181,20 +169,23 @@ function getLevel(boardSize = 4) {
 							return "_";
 						}
 					})
-					.join(" "),
-				""
+					.join(" ")
 			);
 		}
-
 		console.log("");
 	}
 
-	// Place and remove pieces on the board
 	function canPlacePiece(board, piece, offsetX, offsetY) {
 		for (const block of piece.blocks) {
 			const x = offsetX + block.x;
 			const y = offsetY + block.y;
-			if (x < 0 || y < 0 || x >= boardSize || y >= boardSize || board[y][x].pieceId !== null) {
+			if (
+				x < 0 ||
+				y < 0 ||
+				x >= boardSize ||
+				y >= boardSize ||
+				board[y][x].pieceId !== null
+			) {
 				return false;
 			}
 		}
@@ -209,7 +200,6 @@ function getLevel(boardSize = 4) {
 		}
 	}
 
-	// Find words on the board
 	function getWords(board) {
 		const words = [];
 
@@ -246,15 +236,15 @@ function getLevel(boardSize = 4) {
 				if (j === boardSize - 1 && activeWord) words.push({ start: [startWord, i], end: [j, i] });
 			}
 		}
+
 		return words.filter((word) => word.end[0] - word.start[0] > 0 || word.end[1] - word.start[1] > 0);
 	}
 
-	// Crossword Solver
 	function placeWords(board, words, trieRoot) {
 		solverStartTime = Date.now();
 		const usedWords = new Set();
+		let changedCellsStack = []; // Stack to track changes for backtracking
 
-		// Helper function to generate a pattern for a slot
 		function getSlotPattern(slot) {
 			const [x1, y1] = slot.start;
 			const [x2, y2] = slot.end;
@@ -274,13 +264,12 @@ function getLevel(boardSize = 4) {
 			return pattern;
 		}
 
-		// Function to find all possible words matching a pattern using the trie
 		function findWordsForPattern(node, pattern, index, currentWord, results, usedWords, maxResults = 100) {
 			if (Date.now() - solverStartTime > SOLVER_TIME_LIMIT) {
 				return; // Abort if time limit exceeded
 			}
 			if (results.length >= maxResults) {
-				return; // Limit the number of possible words to consider
+				return; // Limit number of results
 			}
 			if (index === pattern.length) {
 				if (node.isEndOfWord && !usedWords.has(currentWord)) {
@@ -301,20 +290,18 @@ function getLevel(boardSize = 4) {
 			}
 		}
 
-		// Forward Checking: Precompute possible words for each slot
 		const slotPossibilities = [];
 		for (const slot of words) {
 			const pattern = getSlotPattern(slot);
 			const possibleWords = [];
-			findWordsForPattern(trieRoot, pattern, 0, "", possibleWords, usedWords, 100); // Limit to 100 words per slot
+			findWordsForPattern(trieRoot, pattern, 0, "", possibleWords, usedWords, 100);
 
 			if (possibleWords.length === 0) {
-				return null; // No possible words, backtrack
+				return null; // No possible words for this slot
 			}
 			slotPossibilities.push({ slot, possibleWords });
 		}
 
-		// Sort slots by the number of possible words (most constrained first)
 		slotPossibilities.sort((a, b) => a.possibleWords.length - b.possibleWords.length);
 
 		function canPlaceWord(word, slot) {
@@ -326,12 +313,8 @@ function getLevel(boardSize = 4) {
 				const x = isHorizontal ? x1 : x1 + i;
 				const y = isHorizontal ? y1 + i : y1;
 				const cell = board[x][y];
-				if (cell.pieceId === null) {
-					return false;
-				}
-				if (cell.letter !== null && cell.letter !== word[i]) {
-					return false;
-				}
+				if (cell.pieceId === null) return false;
+				if (cell.letter !== null && cell.letter !== word[i]) return false;
 			}
 			return true;
 		}
@@ -341,77 +324,49 @@ function getLevel(boardSize = 4) {
 			const [x2, y2] = slot.end;
 			const isHorizontal = x1 === x2;
 
+			const changedCells = [];
 			for (let i = 0; i < word.length; i++) {
 				const x = isHorizontal ? x1 : x1 + i;
 				const y = isHorizontal ? y1 + i : y1;
-				board[x][y].letter = word[i];
+				const oldLetter = board[x][y].letter;
+				if (oldLetter !== word[i]) {
+					board[x][y].letter = word[i];
+					changedCells.push({ x, y, oldLetter });
+				}
 			}
 			usedWords.add(word);
+			changedCellsStack.push({ word, changedCells });
 		}
 
-		function removeWord(word, slot) {
-			const [x1, y1] = slot.start;
-			const [x2, y2] = slot.end;
-			const isHorizontal = x1 === x2;
-
-			for (let i = 0; i < word.length; i++) {
-				const x = isHorizontal ? x1 : x1 + i;
-				const y = isHorizontal ? y1 + i : y1;
-				board[x][y].letter = null;
+		function removeWord() {
+			const { word, changedCells } = changedCellsStack.pop();
+			for (const { x, y, oldLetter } of changedCells) {
+				board[x][y].letter = oldLetter;
 			}
 			usedWords.delete(word);
 		}
 
 		function solve(index) {
 			if (Date.now() - solverStartTime > SOLVER_TIME_LIMIT) {
-				return false; // Abort if time limit exceeded
+				return false; // Time limit exceeded
 			}
 
 			if (index === slotPossibilities.length) return true;
 
 			const { slot } = slotPossibilities[index];
 
-			// Recompute possible words for the slot, considering used words
 			const pattern = getSlotPattern(slot);
-
 			const possibleWords = [];
 			findWordsForPattern(trieRoot, pattern, 0, "", possibleWords, usedWords, 100);
 			if (possibleWords.length === 0) return false;
 
-			// Sort possible words to try words with more common letters first (optional optimization)
-			// possibleWords.sort((a, b) => /* your sorting logic */);
-
+			possibleWords.sort(() => Math.random() - 0.5); // Randomize word order for better results
 			for (const word of possibleWords) {
 				if (canPlaceWord(word, slot)) {
 					placeWord(word, slot);
-
-					// Forward Checking: Update possible words for overlapping slots
-					const backupPossibilities = [];
-					let consistent = true;
-
-					for (let k = index + 1; k < slotPossibilities.length; k++) {
-						const { slot: nextSlot } = slotPossibilities[k];
-						const nextPattern = getSlotPattern(nextSlot);
-						const newPossibleWords = [];
-						findWordsForPattern(trieRoot, nextPattern, 0, "", newPossibleWords, usedWords, 100);
-
-						if (newPossibleWords.length === 0) {
-							consistent = false;
-							break;
-						}
-
-						backupPossibilities.push(slotPossibilities[k].possibleWords);
-						slotPossibilities[k].possibleWords = newPossibleWords;
-					}
-
-					if (consistent && solve(index + 1)) return true;
-
-					// Restore possible words
-					for (let k = index + 1; k < slotPossibilities.length; k++) {
-						slotPossibilities[k].possibleWords = backupPossibilities[k - index - 1];
-					}
-
-					removeWord(word, slot);
+					// Forward checking or additional checks can be done here
+					if (solve(index + 1)) return true;
+					removeWord();
 				}
 			}
 			return false;
@@ -431,36 +386,27 @@ function getLevel(boardSize = 4) {
 			}
 			pieces.push({ name: piece.name, blocks: pieceBlocks });
 		}
-
 		return pieces;
 	}
 
 	function generateLevel() {
 		const maxAttempts = 50; // Limit the number of attempts
 		for (let attempt = 1; attempt <= maxAttempts; attempt++) {
-			// console.log(`Attempt ${attempt} `);
-			board = Array.from({ length: boardSize }, () => Array.from({ length: boardSize }, () => ({ pieceId: null, letter: null })));
+			board = Array.from({ length: boardSize }, () =>
+				Array.from({ length: boardSize }, () => ({ pieceId: null, letter: null }))
+			);
 			placedPieces = [];
 			generateField();
 
-			numberBoard = JSON.parse(JSON.stringify(board));
-
+			let numberBoard = JSON.parse(JSON.stringify(board));
 			const words = getWords(board);
-			// console.log(words);
 
 			const test = placeWords(board, words, trieRoot);
 			if (test) {
-				// console.log("Final Board: ");
 				printBoard(test);
-
-				// console.log(convertBoardToPieces(test));
-
-				// console.log(new Date() - solverStartTime, "ms");
 				return {
 					pieces: convertBoardToPieces(test),
 				};
-			} else {
-				// console.log("Solver failed, regenerating field... ");
 			}
 		}
 		console.error("Failed to generate a solvable level within the maximum attempts.");

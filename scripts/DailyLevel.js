@@ -3,13 +3,13 @@ function setUpDailyGame() {
     const day = date.getDay();
 
     let difficulty = "easy";
-    if (day == 1) difficulty = "easy";
-    if (day == 2) difficulty = "medium";
-    if (day == 3) difficulty = "hard";
-    if (day == 4) difficulty = "easy";
-    if (day == 5) difficulty = "medium";
-    if (day == 6) difficulty = "medium";
-    if (day == 0) difficulty = "hard";
+    // if (day == 1) difficulty = "easy";
+    // if (day == 2) difficulty = "medium";
+    // if (day == 3) difficulty = "hard";
+    // if (day == 4) difficulty = "easy";
+    // if (day == 5) difficulty = "medium";
+    // if (day == 6) difficulty = "medium";
+    // if (day == 0) difficulty = "hard";
 
     date.setHours(3, 0, 0, 5);
     Math.seedrandom(date.toISOString());

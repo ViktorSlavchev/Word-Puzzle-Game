@@ -2,7 +2,7 @@ function setUpDailyGame() {
     const date = new Date();
     const day = date.getDay();
 
-    let difficulty = "easy";
+    let difficulty = "medium";
     // if (day == 1) difficulty = "easy";
     // if (day == 2) difficulty = "medium";
     // if (day == 3) difficulty = "hard";

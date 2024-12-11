@@ -66,6 +66,46 @@ function getLevel(boardSize = 4) {
 				{ x: 0, y: 2 },
 			],
 		},
+		{
+			name: "RightHand",
+			blocks: [
+				{ x: 0, y: 0 },
+				{ x: 1, y: 0 },
+				{ x: 1, y: 1 },
+			],
+		},
+		{
+			name: "LeftHand",
+			blocks: [
+				{ x: 0, y: 0 },
+				{ x: 1, y: 0 },
+				{ x: 0, y: 1 },
+			],
+		},
+		{
+			name: "SmallStraight",
+			blocks: [
+				{ x: 0, y: 0 },
+				{ x: 0, y: 1 },
+			],
+		},
+		{
+			name: "TallStraight",
+			blocks: [
+				{ x: 0, y: 0 },
+				{ x: 0, y: 1 },
+				{ x: 0, y: 2 },
+			],
+		},
+		{
+			name: "TShape",
+			blocks: [
+				{ x: 0, y: 0 },
+				{ x: -1, y: 1 },
+				{ x: 0, y: 1 },
+				{ x: 0, y: 2 },
+			],
+		},
 	];
 
 	let board = Array.from({ length: boardSize }, () =>

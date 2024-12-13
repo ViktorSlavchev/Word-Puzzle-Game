@@ -59,7 +59,7 @@ async function setUpGiveaway() {
 
     if (params.has("referral") && localStorage.getItem("lastDatePlayed") !== formatDate(new Date()) && localStorage.getItem("lastTag") !== params.get("referral")) {
         const referralTag = params.get("referral");
-        console.log("Referral tag:", referral);
+        console.log("Referral tag:", referralTag);
         try {
             const response = await fetch(`${serverURL}/add-entry`, {
                 method: 'POST',
